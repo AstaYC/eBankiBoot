@@ -1,0 +1,106 @@
+
++----------------------------------+
+|              User                |
++----------------------------------+
+| - userId: Long                   |
+| - name: String                   |
+| - age: int                       |
+| - monthlyIncome: Double          |
+| - creditScore: int               |
+| - role: Role                     |
++----------------------------------+
+| + register(): void               |
+| + login(): boolean               |
++----------------------------------+
+
++----------------------------------+
+|             Account              |
++----------------------------------+
+| - accountId: Long                |
+| - balance: Double                |
+| - status: AccountStatus          |
+| - userId: Long                   |
++----------------------------------+
+| + deposit(amount: Double): void  |
+| + withdraw(amount: Double): void |
+| + getBalance(): Double           |
++----------------------------------+
+
++----------------------------------+
+|           Transaction            |
++----------------------------------+
+| - transactionId: Long            |
+| - type: TransactionType          |
+| - amount: Double                 |
+| - sourceAccountId: Long          |
+| - destinationAccountId: Long     |
+| - status: TransactionStatus      |
++----------------------------------+
+| + execute(): boolean             |
+| + cancel(): void                 |
++----------------------------------+
+
++----------------------------------+
+|             Invoice              |
++----------------------------------+
+| - invoiceId: Long                |
+| - amountDue: Double              |
+| - dueDate: Date                  |
+| - userId: Long                   |
++----------------------------------+
+| + pay(): boolean                 |
++----------------------------------+
+
++----------------------------------+
+|              Loan                |
++----------------------------------+
+| - loanId: Long                   |
+| - principal: Double              |
+| - interestRate: Double           |
+| - termMonths: int                |
+| - userId: Long                   |
+| - approved: boolean              |
++----------------------------------+
+| + applyForLoan(): boolean        |
+| + calculateEMI(): Double         |
++----------------------------------+
+
++--------------------------+
+|          Role            |
++--------------------------+
+| <<enum>>                 |
+| - ADMIN                  |
+| - USER                   |
+| - EMPLOYEE               |
++--------------------------+
+
++--------------------------+
+|      AccountStatus       |
++--------------------------+
+| <<enum>>                 |
+| - ACTIVE                 |
+| - BLOCKED                |
++--------------------------+
+
++--------------------------+
+|     TransactionType      |
++--------------------------+
+| <<enum>>                 |
+| - STANDARD               |
+| - INSTANT                |
++--------------------------+
+
++--------------------------+
+|   TransactionStatus      |
++--------------------------+
+| <<enum>>                 |
+| - PENDING                |
+| - COMPLETED              |
+| - REJECTED               |
++--------------------------+
+
+Relations :
+1. User "1" — "many" Account
+2. Account "1" — "many" Transaction
+3. User "1" — "many" Invoice
+4. User "1" — "many" Loan

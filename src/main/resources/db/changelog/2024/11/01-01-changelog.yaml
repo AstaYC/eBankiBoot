@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1730454436539-1
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: approved
+            tableName: loans
+  - changeSet:
+      id: 1730454436539-2
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: approved
+                  type: SMALLINT
+            tableName: loans
+  - changeSet:
+      id: 1730454436539-3
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: smallint
+            columnName: approved
+            tableName: loans
+

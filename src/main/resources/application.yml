@@ -1,13 +1,21 @@
 spring:
   datasource:
-    username : admin
-    url : jdbc:postgresql://localhost:5432/bank
-    password: admin
+    url: jdbc:postgresql://localhost:5432/eBankiBoot
+    username: postgres
+    password: astayoucode
     driver-class-name: org.postgresql.Driver
-  liquibase:
-    change-log: classpath:db/master.yml
+
   jpa:
-    database: postgresql
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
 
-
+server:
+  port: 8082

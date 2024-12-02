@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Sequence Creation -->
+    <changeSet id="1" author="Youcode">
+        <createSequence incrementBy="50" sequenceName="accounts_seq" startValue="1"/>
+        <createSequence incrementBy="50" sequenceName="invoices_seq" startValue="1"/>
+        <createSequence incrementBy="50" sequenceName="loans_seq" startValue="1"/>
+        <createSequence incrementBy="50" sequenceName="transactions_seq" startValue="1"/>
+        <createSequence incrementBy="50" sequenceName="users_seq" startValue="1"/>
+    </changeSet>
+
+    <!-- Users Table -->
+    <changeSet id="2" author="Youcode">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="age" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="credit_score" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="SMALLINT"/>
+            <column name="monthly_income" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Accounts Table -->
+    <changeSet id="3" author="Youcode">
+        <createTable tableName="accounts">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_accounts"/>
+            </column>
+            <column name="balance" type="DOUBLE"/>
+            <column name="status" type="SMALLINT"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Invoices Table -->
+    <changeSet id="4" author="Youcode">
+        <createTable tableName="invoices">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_invoices"/>
+            </column>
+            <column name="amount_due" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="due_date" type="DATE"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Loans Table -->
+    <changeSet id="5" author="Youcode">
+        <createTable tableName="loans">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_loans"/>
+            </column>
+            <column name="principle" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="interest_rate" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="DATE"/>
+            <column name="term_months" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="approved" type="SMALLINT"/>
+            <column name="garanty" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Transactions Table -->
+    <changeSet id="6" author="Youcode">
+        <createTable tableName="transactions">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_transactions"/>
+            </column>
+            <column name="type" type="SMALLINT"/>
+            <column name="status" type="SMALLINT"/>
+            <column name="amount" type="DOUBLE"/>
+            <column name="source_account_id" type="BIGINT"/>
+            <column name="destination_account_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Foreign Key Constraints -->
+    <changeSet id="7" author="Youcode">
+        <addForeignKeyConstraint baseTableName="accounts"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 constraintName="FK_ACCOUNTS_ON_USER"/>
+    </changeSet>
+
+    <changeSet id="8" author="Youcode">
+        <addForeignKeyConstraint baseTableName="invoices"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 constraintName="FK_INVOICES_ON_USER"/>
+    </changeSet>
+
+    <changeSet id="9" author="Youcode">
+        <addForeignKeyConstraint baseTableName="loans"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 constraintName="FK_LOANS_ON_USER"/>
+    </changeSet>
+
+    <changeSet id="10" author="Youcode">
+        <addForeignKeyConstraint baseTableName="transactions"
+                                 baseColumnNames="source_account_id"
+                                 referencedTableName="accounts"
+                                 referencedColumnNames="id"
+                                 constraintName="FK_TRANSACTIONS_ON_SOURCE_ACCOUNT"/>
+
+        <addForeignKeyConstraint baseTableName="transactions"
+                                 baseColumnNames="destination_account_id"
+                                 referencedTableName="accounts"
+                                 referencedColumnNames="id"
+                                 constraintName="FK_TRANSACTIONS_ON_DESTINATION_ACCOUNT"/>
+    </changeSet>
+
+</databaseChangeLog>

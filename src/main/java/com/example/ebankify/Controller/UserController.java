@@ -12,37 +12,47 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/users")
+@RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
-    @GetMapping("/")
+
+    @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
+
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
         UserDTO user = userService.getUserById(userId);
         return ResponseEntity.ok(user);
     }
-    @PostMapping("/")
-    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest) {
-        String role = createUserRequest.getRole();
 
-        if ("ADMIN".equals(role)) {
-            UserDTO createdUser = userService.createUser(createUserRequest.getUserDTO());
-            return ResponseEntity.ok(createdUser);
-        } else if (role == null) {
-            // Set the default role to USER if no role is provided
-            createUserRequest.getUserDTO().setRole(Role.USER);
-            UserDTO createdUser = userService.createUser(createUserRequest.getUserDTO());
-            return ResponseEntity.ok(createdUser);
-        } else {
-            // Return a FORBIDDEN response if the role is not recognized
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(role);
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest createUserRequest) {
+        // Validate input
+        if (createUserRequest.getUserDTO() == null) {
+            return ResponseEntity.badRequest().body("UserDTO cannot be null");
         }
+
+        UserDTO userDTO = createUserRequest.getUserDTO();
+        String role = userDTO.getRole().toString();
+
+        // Assign default role if not provided
+        if (role == null || role.isEmpty()) {
+            userDTO.setRole(Role.USER);
+        } else if ("ADMIN".equals(role)) {
+            userDTO.setRole(Role.ADMIN);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid role: " + role);
+        }
+
+        // Create user and return response
+        UserDTO createdUser = userService.createUser(userDTO);
+        return ResponseEntity.ok(createdUser);
     }
+
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) {

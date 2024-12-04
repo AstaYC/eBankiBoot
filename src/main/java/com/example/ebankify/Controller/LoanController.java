@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/loan")
+@RequestMapping("/api/loan")
 public class LoanController {
 private final LoanService loanService;
 

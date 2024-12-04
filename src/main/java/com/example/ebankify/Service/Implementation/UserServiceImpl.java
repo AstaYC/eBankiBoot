@@ -37,12 +37,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
+        if (userDTO == null) {
+            throw new IllegalArgumentException("UserDTO cannot be null");
+        }
 
-        User user = userMapper.map(userDTO,User.class);
+        // Map UserDTO to User entity
+        User user = userMapper.map(userDTO, User.class);
 
+        // Save to database
         User savedUser = userRepository.save(user);
-        return userMapper.map(savedUser,UserDTO.class);
+
+        // Map back to UserDTO and return
+        return userMapper.map(savedUser, UserDTO.class);
     }
+
+
 
     @Override
     public UserDTO updateUser(Long userId, UserDTO userDTO) {

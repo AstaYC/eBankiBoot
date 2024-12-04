@@ -1,10 +1,7 @@
 package com.example.ebankify.Entity;
 
 import com.example.ebankify.Entity.Enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
@@ -24,6 +21,8 @@ public class User {
     private String password;
     private int age;
     private int creditScore;
+    @Enumerated(EnumType.STRING) // Ensure the enum is stored as a string in the database
+    @Column(name = "role")
     private Role role;
     private double monthly_income;
 }

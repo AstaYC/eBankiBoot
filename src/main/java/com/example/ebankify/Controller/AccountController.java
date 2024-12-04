@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/accounts")
+@RequestMapping("/api/accounts")
 public class AccountController {
     private final AccountService accountService;
 
@@ -18,7 +18,7 @@ public class AccountController {
     }
 
     // Create a new account
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> createAccount(@RequestBody AccountDTO accountDTO) {
         try {
             AccountDTO createdAccount = accountService.createAccount(accountDTO);
@@ -41,7 +41,7 @@ public class AccountController {
     }
 
     // Retrieve all accounts
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<AccountDTO>> getAllAccounts() {
         List<AccountDTO> accounts = accountService.getAllAccounts();
         return ResponseEntity.ok(accounts);

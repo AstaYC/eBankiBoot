@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v2/transaction")
+@RequestMapping("/api/transaction")
 public class TransactionController {
     @Autowired
     private TransactionService transactionService;
@@ -34,7 +34,7 @@ public class TransactionController {
 
 
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<String> createTransaction(@RequestBody TransactionDTO request) {
         try {
             TransactionDTO transactionDTO = transactionService.createTransaction(request);

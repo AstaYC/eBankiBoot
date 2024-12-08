@@ -13,4 +13,5 @@ public interface UserService {
     boolean existsById(Long userId);
     boolean isUserAdmin(Long userId);
     boolean isUserEmployee(Long userId);
+    UserDTO getUserByEmail(String email);
 }

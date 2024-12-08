@@ -93,4 +93,20 @@ public class UserServiceImpl implements UserService {
         return "EMPLOYEE".equalsIgnoreCase(user.getRole().toString());
 
     }
+
+    @Override
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return null; // Return null if no user is found
+        }
+
+        // Convert User entity to UserDTO
+        return new UserDTO(
+                user.getId(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole()
+        );
+    }
 }

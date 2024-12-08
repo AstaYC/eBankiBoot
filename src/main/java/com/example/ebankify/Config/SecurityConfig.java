@@ -22,6 +22,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable()) // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> httpBasic.realmName("Ebankify Admin")); // Configure Basic Authentication explicitly
@@ -41,7 +42,12 @@ public class SecurityConfig {
                 .roles("ADMIN")
                 .build();
 
-        return new InMemoryUserDetailsManager(admin);
+        UserDetails user = User.withUsername("user")
+                .password(passwordEncoder().encode("user123"))
+                .roles("USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(user , admin);
     }
 
     @Bean

@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
         // Convert User entity to UserDTO
         UserDTO userDTO = UserDTO.builder()
                 .id(user.getId())
-                .name(user.getName()) // Assuming the User entity has these fields
+                .name(user.getName())
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .age(user.getAge())

@@ -44,8 +44,6 @@ public class UserController {
             userDTO.setRole(Role.USER);
         } else if ("ADMIN".equals(role)) {
             userDTO.setRole(Role.ADMIN);
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid role: " + role);
         }
 
         // Create user and return response

@@ -21,13 +21,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .httpBasic(httpBasic -> httpBasic.realmName("Ebankify Admin")); // Configure Basic Authentication explicitly
-         return http.build();
+                .httpBasic();
+
+        return http.build();
     }
 
     @Bean
@@ -37,7 +38,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // Define an in-memory user for the "admin" role
+        // Define in-memory users for simplicity
         UserDetails admin = User.withUsername("admin")
                 .password(passwordEncoder().encode("admin123"))
                 .roles("ADMIN")
@@ -48,7 +49,7 @@ public class SecurityConfig {
                 .roles("USER")
                 .build();
 
-        return new InMemoryUserDetailsManager(user , admin);
+        return new InMemoryUserDetailsManager(user, admin);
     }
 
     @Bean

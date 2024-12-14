@@ -1,0 +1,23 @@
+- the transaction test ,
+
+{
+  "type": "STANDARD",
+  "amount": 12,
+  "sourceAccountId": 302,
+  "destinationAccountId": 303
+}
+
+
+-  User
+
+{
+"userDTO": {
+"name": "testUser",
+"email": "testuser@example.com",
+"password": "password123",
+"age": 12,
+"creditScore": 123,
+"monthly_income": 1234,
+"role": "USER"
+}
+}

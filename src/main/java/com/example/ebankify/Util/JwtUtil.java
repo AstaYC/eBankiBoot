@@ -52,4 +52,10 @@ public class JwtUtil {
     public String getRole(String token) {
         return extractClaims(token).get("role", String.class);
     }
+
+    public String getRoles(String token) {
+        Claims claims = extractClaims(token);
+        return claims.get("roles").toString(); // Replace "roles" with the actual key in your JWT
+    }
+
 }

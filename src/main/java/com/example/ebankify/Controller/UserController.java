@@ -4,9 +4,11 @@ import com.example.ebankify.Controller.vm.User.Request.CreateUserRequest;
 import com.example.ebankify.DTO.UserDTO;
 import com.example.ebankify.Entity.Enums.Role;
 import com.example.ebankify.Service.UserService;
+import com.example.ebankify.Util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +16,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
     @Autowired
     private UserService userService;
+
+    private  JwtUtil jwtUtil;
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
@@ -52,6 +57,7 @@ public class UserController {
     }
 
 
+
     @PutMapping("/{userId}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
         UserDTO updatedUser = userService.updateUser(userId, userDTO);
@@ -63,4 +69,5 @@ public class UserController {
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
+
 }

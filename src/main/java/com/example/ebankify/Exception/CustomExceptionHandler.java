@@ -11,4 +11,5 @@ public class CustomExceptionHandler {
     public ResponseEntity<String> handleTagNotFoundException(NotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
 }

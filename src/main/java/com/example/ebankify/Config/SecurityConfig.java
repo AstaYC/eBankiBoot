@@ -46,6 +46,7 @@ public class SecurityConfig {
 
                         .anyRequest().authenticated()
                 )
+
                 // Add JWT filter before processing authentication request
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 // Ensure session is stateless

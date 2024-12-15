@@ -1,4 +1,25 @@
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          okta:
+            client-id: X0c6d7jc2RyiHIQnvZ1BP5aRcTqG9iJH
+            client-secret: PDKrcpiPN2ECLtda-LSbxgvxRjmAZ7yQ10bz7ZaBsTKrOzrCji-jow1cpEKjVkzB
+            scope: openid, profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+        provider:
+          okta:
+            issuer-uri: https://dev-i2202ovbo35eloz0.us.auth0.com/oauth2/default
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-i2202ovbo35eloz0.us.auth0.com/oauth2/default
+          claims:
+            # This maps roles from the Okta groups claim (default 'groups') to Spring Security roles
+            authorities: groups
+
+
   datasource:
     url: jdbc:postgresql://localhost:5432/eBankiBoot
     username: postgres
@@ -19,7 +40,6 @@ spring:
 
 server:
   port: 8082
-
 
 devtools:
   restart:

@@ -31,15 +31,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/getRole").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/users").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/accounts/**").hasRole("ADMIN")
-                        .requestMatchers("/api/transaction").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/accounts/**").hasRole("EMPLOYEE")
                         .requestMatchers("/api/transaction/approve/{id}").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.GET, "/api/users/{userId}").hasRole("EMPLOYEE")
+
+                        .requestMatchers("/api/transaction").hasRole("USER")
+
+                        .requestMatchers("/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 // Add JWT filter before processing authentication request

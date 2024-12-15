@@ -2,6 +2,7 @@ package com.example.ebankify.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -30,18 +31,22 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) // Disable CSRF
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/getRole").permitAll()
-                        .requestMatchers("/api/users").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/accounts/**").hasRole("ADMIN")
-                        .requestMatchers("/api/transaction").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/accounts/**").hasRole("EMPLOYEE")
                         .requestMatchers("/api/transaction/approve/{id}").hasRole("EMPLOYEE")
-                        .requestMatchers("/api/users/{userId}").hasRole("EMPLOYEE")
+                        .requestMatchers(HttpMethod.GET, "/api/users/{userId}").hasRole("EMPLOYEE")
+
+                        .requestMatchers("/api/transaction").hasRole("USER")
+
+                        .requestMatchers("/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
-                // Add JWT filter before processing authenticationrequest
+                // Add JWT filter before processing authentication request
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 // Ensure session is stateless
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

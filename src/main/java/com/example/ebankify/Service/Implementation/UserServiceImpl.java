@@ -8,12 +8,16 @@ import com.example.ebankify.Service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final ModelMapper userMapper;
 
@@ -40,6 +44,11 @@ public class UserServiceImpl implements UserService {
         if (userDTO == null) {
             throw new IllegalArgumentException("UserDTO cannot be null");
         }
+
+        // Encode the password before saving the user
+        String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+        userDTO.setPassword(encodedPassword);  // Set the encoded password to the userDTO
+
 
         // Map UserDTO to User entity
         User user = userMapper.map(userDTO, User.class);
@@ -92,5 +101,27 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
         return "EMPLOYEE".equalsIgnoreCase(user.getRole().toString());
 
+    }
+
+    @Override
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return null; // Return null if no user is found
+        }
+
+        // Convert User entity to UserDTO
+        UserDTO userDTO = UserDTO.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .age(user.getAge())
+                .creditScore(user.getCreditScore())
+                .role(user.getRole())
+                .monthly_income(user.getMonthly_income())
+                .build();
+
+        return userDTO;
     }
 }

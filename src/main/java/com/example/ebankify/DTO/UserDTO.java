@@ -18,4 +18,5 @@ public class UserDTO {
     private int creditScore;
     private Role role;
     private Double monthly_income;
+
 }

@@ -2,69 +2,57 @@ pipeline {
     agent any
 
     tools {
-        jdk 'Java 11'
-        maven 'Maven 3.6.3'
-    }
-
-    environment {
-        DOCKER_IMAGE = 'your-dockerhub-username/ebankify'
+        jdk 'JDK 17'       // Adjusted to match Jenkins JDK configuration
+        maven 'Maven'      // Adjusted to match Jenkins Maven configuration
     }
 
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                echo 'Checking out code...'
-                git branch: 'main', credentialsId: 'github-credentials-id', url: 'https://github.com/your-username/ebankify.git'
+                git branch: 'Pipeline', url: 'https://github.com/AstaYC/eBankiBoot.git'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building project...'
-                sh 'mvn clean package'
+                sh 'chmod +x mvnw'  // Ensure mvnw is executable
+                sh './mvnw clean package -DskipTests'
             }
         }
 
-        stage('Unit Tests') {
+        stage('Code Quality Analysis') {
             steps {
-                echo 'Running tests...'
-                sh 'mvn test'
-            }
-        }
-
-        stage('Code Analysis') {
-            steps {
-                echo 'Analyzing code with SonarQube...'
                 withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
+                    sh './mvnw sonar:sonar'
                 }
             }
         }
 
-        stage('Docker Build and Push') {
+        stage('Unit Tests and Coverage') {
             steps {
-                echo 'Building Docker image...'
-                sh 'docker build -t ${DOCKER_IMAGE} .'
-                echo 'Pushing Docker image to DockerHub...'
-                sh 'docker push ${DOCKER_IMAGE}'
+                sh './mvnw test'
+            }
+            post {
+                always {
+                    jacoco execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java'
+                }
             }
         }
 
-        stage('Deploy') {
+        stage('Docker Build and Deploy') {
             steps {
-                echo 'Deploying application...'
-                input message: 'Deploy to production?', ok: 'Deploy'
-                sh 'docker run -p 8081:8080 ${DOCKER_IMAGE}'
+                sh 'docker build -t spring-boot-app .'
+                sh 'docker run -d -p 8080:8080 spring-boot-app'
             }
         }
     }
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            emailext subject: 'Build Successful', body: 'The build was successful!', recipientProviders: [[$class: 'DevelopersRecipientProvider']]
         }
         failure {
-            echo 'Build failed. Please check the logs.'
+            emailext subject: 'Build Failed', body: 'The build failed. Please check Jenkins.', recipientProviders: [[$class: 'DevelopersRecipientProvider']]
         }
     }
 }

@@ -1,15 +1,15 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = 'spring-boot-app'
-        SONARQUBE_SERVER = 'SonarQube'
+    tools {
+        jdk 'JDK 17'       // Adjusted to match Jenkins JDK configuration
+        maven 'Maven'      // Adjusted to match Jenkins Maven configuration
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-repo-url.git'
+                git branch: 'main', url: 'https://github.com/AstaYC/eBankiBoot.git'
             }
         }
 
@@ -40,8 +40,8 @@ pipeline {
 
         stage('Docker Build and Deploy') {
             steps {
-                sh 'docker build -t ${DOCKER_IMAGE} .'
-                sh 'docker run -d -p 8080:8080 ${DOCKER_IMAGE}'
+                sh 'docker build -t spring-boot-app .'
+                sh 'docker run -d -p 8080:8080 spring-boot-app'
             }
         }
     }

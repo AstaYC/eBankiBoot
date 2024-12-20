@@ -20,13 +20,13 @@ pipeline {
             }
         }
 
-        stage('Code Quality Analysis') {
-            steps {
-                withSonarQubeEnv('LocalSonarQube') {
-                    sh './mvnw sonar:sonar -Dsonar.host.url=http://localhost:9000'
-                }
-            }
-        }
+         stage('Code Quality Analysis') {
+             steps {
+                 withSonarQubeEnv('SonarQube') {
+                     sh './mvnw sonar:sonar -Dsonar.host.url=http://localhost:9000'
+                 }
+             }
+         }
 
 
         stage('Unit Tests and Coverage') {

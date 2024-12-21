@@ -22,7 +22,7 @@ pipeline {
 
          stage('Code Quality Analysis') {
              steps {
-                 withSonarQubeEnv('SonarQube') {
+                 withSonarQubeEnv('SonarQubeServer') {
                      sh './mvnw sonar:sonar -Dsonar.host.url=http://localhost:9000'
                  }
              }

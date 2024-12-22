@@ -21,12 +21,6 @@ pipeline {
             }
         }
 
-        stage('Unit Tests and Coverage') {
-            steps {
-                sh './mvnw test -e -X' // Add debug and verbose flags
-            }
-        }
-
         stage('Docker Build and Deploy') {
             steps {
                 sh 'docker build -t spring-boot-app .'

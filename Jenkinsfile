@@ -13,20 +13,22 @@ pipeline {
             }
         }
 
-        stage('Install Docker') {
-            steps {
-                script {
-                    // Check if Docker is installed, otherwise install it
-                    sh 'which docker || (curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh)'
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'ls -l mvnw'  // Add this command here for debugging
                 sh 'chmod +x mvnw'  // Ensure mvnw is executable
                 sh './mvnw clean package -DskipTests'
+            }
+        }
+
+        stage('Unit Tests and Coverage') {
+            steps {
+                sh './mvnw test'
+            }
+            post {
+                always {
+                    jacoco execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java'
+                }
             }
         }
 

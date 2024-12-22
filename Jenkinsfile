@@ -23,12 +23,7 @@ pipeline {
 
         stage('Unit Tests and Coverage') {
             steps {
-                sh './mvnw test'
-            }
-            post {
-                always {
-                    jacoco execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java'
-                }
+                sh './mvnw test -e -X' // Add debug and verbose flags
             }
         }
 

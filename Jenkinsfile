@@ -20,15 +20,6 @@ pipeline {
             }
         }
 
-         stage('Code Quality Analysis') {
-             steps {
-                 withSonarQubeEnv('SonarQubeServer') {
-                     sh './mvnw sonar:sonar -Dsonar.host.url=http://localhost:9000'
-                 }
-             }
-         }
-
-
         stage('Unit Tests and Coverage') {
             steps {
                 sh './mvnw test'

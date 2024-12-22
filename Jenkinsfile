@@ -23,7 +23,7 @@ pipeline {
 
         stage('Unit Tests and Coverage') {
             steps {
-                sh './mvnw test'
+                sh './mvnw test -e -X' // Add debug and verbose flags
             }
             post {
                 always {

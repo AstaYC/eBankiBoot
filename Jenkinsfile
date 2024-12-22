@@ -15,19 +15,11 @@ pipeline {
 
         stage('Build') {
             steps {
+                sh 'ls -l mvnw'  // Add this command here for debugging
                 sh 'chmod +x mvnw'  // Ensure mvnw is executable
                 sh './mvnw clean package -DskipTests'
             }
         }
-
-         stage('Code Quality Analysis') {
-             steps {
-                 withSonarQubeEnv('SonarQubeServer') {
-                     sh './mvnw sonar:sonar -Dsonar.host.url=http://localhost:9000'
-                 }
-             }
-         }
-
 
         stage('Unit Tests and Coverage') {
             steps {

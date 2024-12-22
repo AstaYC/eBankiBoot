@@ -15,6 +15,7 @@ pipeline {
 
         stage('Build') {
             steps {
+                sh 'ls -l mvnw'  // Add this command here for debugging
                 sh 'chmod +x mvnw'  // Ensure mvnw is executable
                 sh './mvnw clean package -DskipTests'
             }

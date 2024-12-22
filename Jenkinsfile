@@ -13,6 +13,15 @@ pipeline {
             }
         }
 
+        stage('Install Docker') {
+            steps {
+                script {
+                    // Check if Docker is installed, otherwise install it
+                    sh 'which docker || (curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh)'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'ls -l mvnw'  // Add this command here for debugging

@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK 17'       // Adjusted to match Jenkins JDK configuration
-        maven 'Maven'      // Adjusted to match Jenkins Maven configuration
+        jdk 'JDK 17'
+        maven 'Maven'
     }
 
     stages {
@@ -21,23 +21,18 @@ pipeline {
             }
         }
 
+
         stage('Code Quality Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh './mvnw sonar:sonar'
+                withSonarQubeEnv('SonarQubeServer') {
+                        sh './mvnw sonar:sonar'
                 }
             }
         }
 
-
         stage('Unit Tests and Coverage') {
             steps {
-                sh './mvnw test'
-            }
-            post {
-                always {
-                    jacoco execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java'
-                }
+                    sh './mvnw test -Dspring.profiles.active=test'
             }
         }
 

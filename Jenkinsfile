@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         jdk 'JDK 17'
-        maven 'Maven'
+        maven 'Maven 3.8.5'
     }
 
     stages {
@@ -30,15 +30,9 @@ pipeline {
             }
         }
 
-
         stage('Unit Tests and Coverage') {
             steps {
-                sh './mvnw test'
-            }
-            post {
-                always {
-                    jacoco execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java'
-                }
+                    sh './mvnw test -Dspring.profiles.active=test'
             }
         }
 

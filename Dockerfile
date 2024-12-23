@@ -26,3 +26,24 @@ ENV PATH="$MAVEN_HOME/bin:$PATH"
 
 # Return to Jenkins user
 USER jenkins
+
+FROM maven:3.8-openjdk-17-slim as builder
+
+WORKDIR /app
+
+COPY pom.xml ./pom.xml
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+Use the official OpenJDK 17 runtime image for running the app
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/target/eBankify-0.0.1-SNAPSHOT.war /app/app.jar
+
+EXPOSE 8082
+
+Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]

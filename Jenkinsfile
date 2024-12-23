@@ -32,7 +32,7 @@ pipeline {
 
         stage('Unit Tests and Coverage') {
             steps {
-                    sh './mvnw test -Dspring.profiles.active=test'
+                    sh './mvnw test'
             }
         }
 

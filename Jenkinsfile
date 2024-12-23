@@ -21,6 +21,15 @@ pipeline {
             }
         }
 
+        stage('Code Quality Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh './mvnw sonar:sonar'
+                }
+            }
+        }
+
+
         stage('Unit Tests and Coverage') {
             steps {
                 sh './mvnw test'

@@ -32,9 +32,21 @@ pipeline {
 
         stage('Unit Tests and Coverage') {
             steps {
-                echo "test pass successfully"
+                echo "Running Unit Tests and Coverage Analysis"
+                script {
+                    // Run tests with Maven
+                    def testResult = sh(script: "mvn test -Dspring.profiles.active=test", returnStatus: true)
+
+                    // Check test result and act accordingly
+                    if (testResult == 0) {
+                        echo "Tests passed successfully!"
+                    } else {
+                        error "Unit tests failed. Please check the logs for details."
+                    }
+                }
             }
         }
+
 
         stage('Manual Approval') {
             steps {

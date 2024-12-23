@@ -32,6 +32,12 @@ pipeline {
             }
         }
 
+        stage('Manual Approval') {
+            steps {
+                input 'Deploy to Docker?'
+            }
+        }
+
         stage('Docker Build and Deploy') {
             steps {
                 sh 'docker build -t spring-boot-app .'
@@ -41,11 +47,15 @@ pipeline {
     }
 
     post {
-        success {
-            emailext subject: 'Build Successful', body: 'The build was successful!', recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-        }
-        failure {
-            emailext subject: 'Build Failed', body: 'The build failed. Please check Jenkins.', recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            success {
+                mail to: 'lferda7rad@gmail.com',
+                     subject: "Build Successful: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                     body: "The build was successful!\n\nCheck it here: ${env.BUILD_URL}"
+            }
+            failure {
+                mail to: 'lferda7rad@gmail.com',
+                     subject: "Build Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                     body: "The build failed!\n\nCheck it here: ${env.BUILD_URL}"
+            }
         }
     }
-}

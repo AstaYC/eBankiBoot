@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes)
@@ -9,3 +12,7 @@ import { routes } from './app.routes';
   exports: [RouterModule]
 })
 export class AppModule {}
+
+providers: [
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+]

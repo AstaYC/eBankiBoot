@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth.service';
+import { AuthService } from '../authService/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [ReactiveFormsModule, CommonModule], // Add ReactiveFormsModule here
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
   loginForm: FormGroup;
-  isLoading = false; // For handling loading state
-  errorMessage: string | null = null; // To display error messages
 
   constructor(
     private fb: FormBuilder,
@@ -27,5 +25,22 @@ export class LoginComponent {
       password: ['', Validators.required],
     });
   }
-}
 
+  // Method to handle form submission
+  onSubmit() {
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (response) => {
+          console.log('Login successful', response);
+          this.router.navigate(['dashboard']);
+        },
+        error: (error) => {
+          console.error('Login failed', error);
+          alert('Login failed: ' + error.error.message);
+        },
+      });
+    } else {
+      alert('Please fill in all required fields.');
+    }
+  }
+}

@@ -21,8 +21,8 @@ export class LoginComponent {
   ) {
     // Initialize the login form with validation rules
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: ['john.doe2@example.com'], // No validators
+      password: ['password123'], // No validators
     });
   }
 
@@ -39,8 +39,6 @@ export class LoginComponent {
           alert('Login failed: ' + error.error.message);
         },
       });
-    } else {
-      alert('Please fill in all required fields.');
     }
   }
 }

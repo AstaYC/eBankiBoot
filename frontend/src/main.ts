@@ -12,4 +12,4 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     importProvidersFrom(ReactiveFormsModule), // Ensure ReactiveFormsModule is imported
   ],
-});
+}).catch(err => console.log(err));

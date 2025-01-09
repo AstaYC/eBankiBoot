@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import jwtDecode from 'jwt-decode';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +19,18 @@ export class TokenService {
 
   removeToken(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  getDecodedToken(token: string): any {
+    return jwtDecode(token);
+  }
+
+  getUserRole(): string | null {
+    const token = localStorage.getItem('auth-token');
+    if (token) {
+      const decodedToken = this.getDecodedToken(token);
+      return decodedToken.role; // Adjust based on your backend's JWT structure
+    }
+    return null;
   }
 }

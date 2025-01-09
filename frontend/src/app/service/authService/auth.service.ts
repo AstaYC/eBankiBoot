@@ -9,13 +9,17 @@ import { environment } from '../../../environments/environment';
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log('AuthService initialized');
+  }
 
-  login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, credentials);
+  login(data: { email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, data ,{responseType: 'text' });
   }
 
   register(data: { name: string; email: string; password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 }
+
+

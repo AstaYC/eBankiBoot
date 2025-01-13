@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SidebarComponent} from "../sidebar/sidebar.component";
-import {TransactionResponse, TransactionService} from "../../core/services/transactions/transaction.service";
-import {AccountService, BankAccount} from "../../core/services/accounts/account.service";
+import {TransactionResponse, TransactionService} from "../../service/transactions/transaction.service";
+import {AccountService, BankAccount} from "../../service/accounts/account.service";
 import {data} from "autoprefixer";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {
   ScheduledTransferResponse,
   ScheduledTransfersService
-} from "../../core/services/scheduledTransfer/scheduled-transfers.service";
+} from "../../service/scheduledTransfer/scheduled-transfers.service";
 
 @Component({
   selector: 'app-transactions',

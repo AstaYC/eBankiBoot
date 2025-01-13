@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SidebarComponent} from "../sidebar/sidebar.component";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {InvoiceRequest, InvoiceResponse, InvoiceService} from "../../core/services/invoices/invoice.service";
+import {InvoiceRequest, InvoiceResponse, InvoiceService} from "../../service/invoices/invoice.service";
 import {data} from "autoprefixer";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 

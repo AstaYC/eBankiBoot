@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SidebarComponent} from "../sidebar/sidebar.component";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {AccountService, BankAccount, AccountCreationDTO} from "../../core/services/accounts/account.service";
+import {AccountService, BankAccount, AccountCreationDTO} from "../../service/accounts/account.service";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {data} from "autoprefixer";
 import {error} from "@angular/compiler-cli/src/transformers/util";

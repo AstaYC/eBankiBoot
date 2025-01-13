@@ -7,7 +7,7 @@ import {
   BankAccount,
   TransactionRequest,
   TransferRequest
-} from "../../core/services/accounts/account.service";
+} from "../../service/accounts/account.service";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({

@@ -18,18 +18,11 @@ export const routes: Routes = [
   },
 
   {
-    path: 'employee',
-    loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
-    canActivate: [RoleGuard],
-    data: { role: 'EMPLOYEE' }
-  },
-  {
     path: 'user',
     loadChildren: () => import('./user/user.module').then(m => m.UserModule),
     canActivate: [RoleGuard],
     data: { role: 'USER' }
   },
-
 
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

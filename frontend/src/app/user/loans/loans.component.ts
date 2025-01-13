@@ -3,7 +3,7 @@ import {SidebarComponent} from "../sidebar/sidebar.component";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import {LoanRequest, LoanResponse, LoanService} from "../../core/services/loans/loan.service";
+import {LoanRequest, LoanResponse, LoanService} from "../../service/loans/loan.service";
 import {data} from "autoprefixer";
 
 @Component({

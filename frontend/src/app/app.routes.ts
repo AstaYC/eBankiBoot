@@ -2,17 +2,34 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import {UnauthorizedComponent} from "./unauthorized/unauthorized.component";
-import {AdminDashboardComponent} from "./admin-dashboard/admin-dashboard.component";
 import {RoleGuard} from "./guard/roleGuard/role.guard";
-import {UserDashboardComponent} from "./user-dashboard/user-dashboard.component";
-import {EmployeeDashboardComponent} from "./employee-dashboard/employee-dashboard.component";
+import {HomeComponent} from "./home/home.component";
 
 export const routes: Routes = [
+  { path: 'home', component: HomeComponent},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'admin', component: AdminDashboardComponent, canActivate: [RoleGuard], data: { role: 'ADMIN' } },
-  { path: 'user', component: UserDashboardComponent, canActivate: [RoleGuard], data: { role: 'USER' } },
-  { path: 'employee', component: EmployeeDashboardComponent, canActivate: [RoleGuard], data: { role: 'EMPLOYEE' } },
+
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+    canActivate: [RoleGuard],
+    data: {  role: 'ADMIN' }
+  },
+
+  {
+    path: 'employee',
+    loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
+    canActivate: [RoleGuard],
+    data: { role: 'EMPLOYEE' }
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule),
+    canActivate: [RoleGuard],
+    data: { role: 'USER' }
+  },
+
 
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

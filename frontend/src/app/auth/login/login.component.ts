@@ -5,6 +5,8 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {NgIf} from "@angular/common";
+import {TokenService} from "../../service/tokenService/token.service";
+
 
 @Component({
   selector: 'app-login',
@@ -24,7 +26,11 @@ export class LoginComponent {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService,
+              private router: Router,
+              private tokenService: TokenService,
+
+  ) { }
 
   login() {
     if(!this.email || !this.password){
@@ -35,13 +41,15 @@ export class LoginComponent {
 
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
-        if(response && response.accessToken){
+        if(response){
           this.successMessage = 'Login successful';
           this.errorMessage = '';
 
-          if(response.role === 'ADMIN'){
+          this.tokenService.saveToken(response);
+
+          if(this.tokenService.getUserRole() == 'ADMIN'){
             this.router.navigate(['/admin/dashboard']);
-          }else if (response.role === 'EMPLOYEE'){
+          }else if (this.tokenService.getUserRole() === 'EMPLOYEE'){
             this.router.navigate(['/employee/dashboard']);
           } else{
             this.router.navigate(['/user/dashboard']);
@@ -55,6 +63,7 @@ export class LoginComponent {
         this.errorMessage = error.error?.message || 'login failed. Pleas check your credentials';
         this.successMessage = '';
         console.error('Login failed',error);
+
       }
     });
   }

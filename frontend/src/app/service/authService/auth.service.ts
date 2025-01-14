@@ -4,6 +4,8 @@ import {BehaviorSubject, catchError, map, Observable, of, tap, throwError} from 
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {Router} from "@angular/router";
 import { environment } from '../../../environments/environment';
+import {TokenService} from "../tokenService/token.service";
+
 
 
 
@@ -16,7 +18,9 @@ export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+
+  constructor(private http: HttpClient , private tokenService: TokenService,
+  ) {
     const token = localStorage.getItem('token');
     this.isAuthenticatedSubject.next(!!token);
   }
@@ -24,12 +28,11 @@ export class AuthService {
   login(email: string ,  password: string): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
     const body = { email , password};
-    return this.http.post(`${this.apiUrl}/login`, body, { headers}).pipe(
+    return this.http.post(`${this.apiUrl}/login`, body, { headers ,  responseType: 'text'}).pipe(
       tap((response: any) => {
-        if(response.accessToken){
-          localStorage.setItem('accessToken', response.accessToken);
-          localStorage.setItem('refreshToken', response.refreshToken);
-          localStorage.setItem('role', response.role);
+        if(response){
+          localStorage.setItem('accessToken', response);
+          localStorage.setItem('role', <string>this.tokenService.getUserRole());
           this.isAuthenticatedSubject.next(true);
         }
       }),

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SidebarComponent} from "../../sidebar/sidebar.component";
 import {CurrencyPipe, NgClass, NgForOf, NgIf, TitleCasePipe} from "@angular/common";
-import {AdminService} from "../../../core/services/admin/admin.service";
+import {AdminService} from "../../../service/admin/admin.service";
 
 @Component({
   selector: 'app-accounts',

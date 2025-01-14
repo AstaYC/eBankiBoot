@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SidebarComponent} from "../../sidebar/sidebar.component";
 import {NgForOf, NgIf} from "@angular/common";
-import {UserService} from "../../../core/services/admin/users/user.service";
+import {UserService} from "../../../service/admin/users/user.service";
 
 @Component({
   selector: 'app-users',

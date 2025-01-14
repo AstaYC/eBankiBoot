@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SidebarComponent} from "../sidebar/sidebar.component";
 import {NgForOf} from "@angular/common";
-import {DashboardService} from "../../core/services/admin/dashboard/dashboard.service";
+import {DashboardService} from "../../service/admin/dashboard/dashboard.service";
 
 @Component({
   selector: 'app-dashboard',

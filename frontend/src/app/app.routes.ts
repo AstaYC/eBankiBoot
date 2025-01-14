@@ -24,6 +24,13 @@ export const routes: Routes = [
     data: { role: 'USER' }
   },
 
+  {
+    path:'employee',
+    loadChildren: () =>import('./employee/employee.module').then(m => m.EmployeeModule),
+    canActivate: [RoleGuard],
+    data : { role: 'Employee' }
+  },
+
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' },
